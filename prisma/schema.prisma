@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SportType {
+  RUNNING
+  CYCLING
+  SWIMMING
+  ROLLER
+  WORKOUT
+  CLIMBING
+  STRETCH
+  OTHER
+}
+
+enum Type {
+  TRAINING
+  LONG_DISTANCE
+  COMPETITION
+  HOME_WORK
+}
+
+model User {
+  id                String    @id @default(cuid())
+  username          String    @unique
+  email             String    @unique
+  password          String
+  firstname         String?
+  lastname          String?
+  birthdate         DateTime?
+  bio               String?
+  city              String?
+  state             String?
+  country           String?
+  sex               String?
+  weight            Float?
+  activities_count  Int
+  total_distance    Int
+  total_moving_time Int
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  activities Activity[]
+  shoes      Shoe[]
+}
+
+model Activity {
+  id                   String    @id @default(cuid())
+  name                 String
+  distance             Float
+  moving_time          Int
+  total_elevation_gain Float?
+  type                 Type
+  sport_type           SportType
+  start_date           DateTime  @default(now())
+
+  average_speed Float @default(0)
+
+  elev_high   Float?
+  elev_low    Float?
+  description String?
+
+  userId String?
+  shoeId Int?
+  Shoe   Shoe?   @relation(fields: [shoeId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id])
+}
+
+model Shoe {
+  id         Int        @id @default(autoincrement())
+  brand      String
+  model      String
+  size       Float
+  color      String
+  material   String
+  price      Float
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  userId     String?
+  activities Activity[]
+  User       User?      @relation(fields: [userId], references: [id])
+}
