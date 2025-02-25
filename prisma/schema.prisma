@@ -2,26 +2,49 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
- 
+
+enum SportType {
+  RUNNING
+  CYCLING
+  SWIMMING
+  ROLLER
+  WORKOUT
+  CLIMBING
+  STRETCH
+  OTHER
+}
+
+enum Type {
+  TRAINING
+  LONG_DISTANCE
+  COMPETITION
+  HOME_WORK
+}
+
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id               String          @id @default(cuid())
+  name             String?
+  email            String          @unique
+  emailVerified    DateTime?
+  image            String?
+  distance         Int?
+  weight           Float?
+  activities_count Int?
+  accounts         Account[]
+  sessions         Session[]
+  activities       Activity[]
+  shoes            Shoe[]
   // Optional for WebAuthn support
-  Authenticator Authenticator[]
- 
+  Authenticator    Authenticator[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model Account {
   userId            String
   type              String
@@ -34,33 +57,33 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
- 
+
 // Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
@@ -71,8 +94,51 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
+}
+
+model Activity {
+  id                   String    @id @default(cuid())
+  name                 String
+  distance             Float
+  moving_time          Int
+  total_elevation_gain Float?
+  type                 Type
+  sport_type           SportType
+  start_date           DateTime  @default(now())
+  start_date_local     DateTime?
+  external_id          String?   @unique
+  upload_id            Int?
+  trainer              Boolean?
+  private              Boolean?
+  average_speed        Float     @default(0)
+  max_speed            Float?
+  average_cadence      Float?
+  has_heartrate        Boolean?
+  elev_high            Float?
+  elev_low             Float?
+  description          String?
+  calories             Float?
+  userId               String?
+  shoeId               Int?
+  Shoe                 Shoe?     @relation(fields: [shoeId], references: [id])
+  User                 User?     @relation(fields: [userId], references: [id])
+}
+
+model Shoe {
+  id         Int        @id @default(autoincrement())
+  brand      String
+  model      String
+  size       Float
+  color      String
+  material   String
+  price      Float
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  userId     String?
+  activities Activity[]
+  User       User?      @relation(fields: [userId], references: [id])
 }
