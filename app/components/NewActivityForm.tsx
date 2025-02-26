@@ -1,7 +1,9 @@
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { formatHMStoSeconds } from "../utils/timeUtils";
 import { Activity, SportType, Type } from "@prisma/client";
 import TimeInput from "./TimeInput";
+import { useState } from "react";
+import { getMessageBasedOnTime } from "../utils/stringUtils";
 
 type ActivityFormInputs = Omit<Activity, "moving_time"> & {
   moving_time: string;
@@ -10,34 +12,13 @@ type ActivityFormInputs = Omit<Activity, "moving_time"> & {
 export default function NewActivityForm() {
   const { register, handleSubmit, reset, control } =
     useForm<ActivityFormInputs>();
+
+  const [selectedSport, setSelectedSport] = useState("");
+  const [selectedType, setselectedType] = useState("");
+
   const sportTypes = SportType;
-  const sportTypeSelected = useWatch({
-    control,
-    name: "sport_type",
-  });
-  const sportsWithDistance: SportType[] = [
-    "CYCLING",
-    "ROLLER",
-    "RUNNING",
-    "SWIMMING",
-  ];
-  const type = Type;
-
-  // Texte préformatté en fonction de l'heure
-  const getMessageBasedOnTime = () => {
-    const currentHour = new Date().getHours();
-
-    if (currentHour >= 5 && currentHour < 12) {
-      return "Morning";
-    }
-    if (currentHour >= 12 && currentHour < 18) {
-      return "Afternoon";
-    }
-    if (currentHour >= 18 && currentHour < 22) {
-      return "Evening";
-    }
-    return "Night";
-  };
+  const types = Type;
+  const sportsWithDistance = ["CYCLING", "ROLLER", "RUNNING", "SWIMMING"];
 
   const onSubmit = async (data: ActivityFormInputs) => {
     if (data.name === "") {
@@ -71,6 +52,7 @@ export default function NewActivityForm() {
       alert("Erreur lors de l'ajout de l'activité.");
     }
   };
+
   return (
     <div className="border-4 border-red-400">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -78,7 +60,16 @@ export default function NewActivityForm() {
         <input id="name" {...register("name")} />
 
         <label htmlFor="sport_type">Type de sport</label>
-        <select id="sport_type" {...register("sport_type", { required: true })}>
+        <select
+          id="sport_type"
+          {...register("sport_type", { required: true })}
+          value={selectedSport} // Lier l'état de sport sélectionné avec la valeur du select
+          onChange={(e) => setSelectedSport(e.target.value)}
+        >
+          <option value="" disabled>
+            Choisir un sport
+          </option>
+          {/* Option par défaut */}
           {Object.entries(sportTypes).map(([key, value]) => {
             return (
               <option key={key} value={key}>
@@ -88,8 +79,16 @@ export default function NewActivityForm() {
           })}
         </select>
         <label htmlFor="type">Type</label>
-        <select id="type" {...register("type", { required: true })}>
-          {Object.entries(type).map(([key, value]) => {
+        <select
+          id="type"
+          {...register("type", { required: true })}
+          value={selectedType} // Lier l'état de sport sélectionné avec la valeur du select
+          onChange={(e) => setselectedType(e.target.value)}
+        >
+          <option value="" disabled>
+            Choisis un type
+          </option>
+          {Object.entries(types).map(([key, value]) => {
             return (
               <option key={key} value={key}>
                 {value.toLowerCase()}
@@ -98,7 +97,7 @@ export default function NewActivityForm() {
           })}
         </select>
 
-        {sportsWithDistance.includes(sportTypeSelected) && (
+        {sportsWithDistance.includes(selectedSport) && (
           <div>
             <label htmlFor="distance">Distance (en km)</label>
             <input

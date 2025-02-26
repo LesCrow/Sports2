@@ -3,42 +3,14 @@ import { convertMetersToKilometers } from "../utils/distanceUtils";
 import { formatSecondsToHMS } from "../utils/timeUtils";
 import { TTotalActivities } from "../types";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import axios from "axios";
 
-export default function ActivitiesResume() {
-  const { status } = useSession();
-  const [totalActivities, setTotalActivities] =
-    useState<TTotalActivities | null>(null);
+interface IActivitiesResumeProps {
+  totalActivities: TTotalActivities | null; // TTotalActivities étant le type de données des activités
+}
 
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      const fetchTotalActivities = async () => {
-        try {
-          const response = await axios.get("/api/activities/total");
-          setTotalActivities(response.data);
-        } catch (err) {
-          const error = err as Error;
-          setError(error.message);
-        }
-      };
-
-      fetchTotalActivities();
-    }
-  }, [status]);
-
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  console.log(totalActivities);
-
+export default function ActivitiesResume({
+  totalActivities,
+}: IActivitiesResumeProps) {
   const getSportIcon = (sportType: SportType): string => {
     switch (sportType) {
       case "ROLLER":
