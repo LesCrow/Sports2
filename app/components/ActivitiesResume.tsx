@@ -57,9 +57,9 @@ export default function ActivitiesResume() {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-screen ">
       <h2>All time </h2>
-      <div className="h-[35%] border-2 flex flex-col justify-between p-5">
+      <div className="h-[35%] border-4 border-black flex flex-col justify-between p-5">
         <div className=" flex justify-around text-center">
           <p>
             <span className="text-4xl">{totalActivities?.activitiesCount}</span>{" "}

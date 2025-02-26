@@ -48,13 +48,15 @@ export default function Profile() {
     return <div>Loading...</div>;
   }
 
-  console.log(user);
+  const date = new Date(user.createdAt);
+  const formattedDate = date.toLocaleDateString("fr-FR");
 
   return (
     <div>
       <p>{user.name}</p>
       <p>{user.email}</p>
-      {/* <p>{user.createdAt}</p> */}
+      <p>{user.weight} kg</p>
+      <p>Inscrit depuis le : {formattedDate}</p>
     </div>
   );
 }

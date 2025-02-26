@@ -62,7 +62,7 @@ export default function NewActivityForm() {
     }
   };
   return (
-    <div>
+    <div className="border-4 border-red-400">
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="name">Nom de l&apos;activité</label>
         <input id="name" {...register("name")} />

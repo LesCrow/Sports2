@@ -23,11 +23,8 @@ export default function Home() {
         <h1>Welcome, {session.user?.name}</h1>
         <SignOutButton />
       </div>
+      <NewActivityForm />
       <ActivitiesResume />
-
-      <div>
-        <NewActivityForm />
-      </div>
     </div>
   );
 }
