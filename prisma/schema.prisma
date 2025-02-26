@@ -103,25 +103,18 @@ model Authenticator {
 model Activity {
   id                   String    @id @default(cuid())
   name                 String
-  distance             Float
+  distance             Float  
   moving_time          Int
   total_elevation_gain Float?
   type                 Type
   sport_type           SportType
   start_date           DateTime  @default(now())
   start_date_local     DateTime?
-  external_id          String?   @unique
-  upload_id            Int?
   trainer              Boolean?
-  private              Boolean?
   average_speed        Float     @default(0)
-  max_speed            Float?
-  average_cadence      Float?
-  has_heartrate        Boolean?
   elev_high            Float?
   elev_low             Float?
   description          String?
-  calories             Float?
   userId               String?
   shoeId               Int?
   Shoe                 Shoe?     @relation(fields: [shoeId], references: [id])

@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { formatHMStoSeconds } from "../utils/timeUtils";
 import { Activity, SportType, Type } from "@prisma/client";
 import TimeInput from "./TimeInput";
@@ -11,6 +11,16 @@ export default function NewActivityForm() {
   const { register, handleSubmit, reset, control } =
     useForm<ActivityFormInputs>();
   const sportTypes = SportType;
+  const sportTypeSelected = useWatch({
+    control,
+    name: "sport_type",
+  });
+  const sportsWithDistance: SportType[] = [
+    "CYCLING",
+    "ROLLER",
+    "RUNNING",
+    "SWIMMING",
+  ];
   const type = Type;
 
   // Texte préformatté en fonction de l'heure
@@ -36,7 +46,7 @@ export default function NewActivityForm() {
     const payload = {
       ...data,
 
-      distance: data.distance * 1000, // Convertir en mètres
+      distance: data.distance ? data.distance * 1000 : 0, // Convertir en mètres
       moving_time: formatHMStoSeconds(data.moving_time), // Convertir en secondes
     };
 
@@ -88,13 +98,20 @@ export default function NewActivityForm() {
           })}
         </select>
 
-        <label htmlFor="distance">Distance (en km)</label>
-        <input
-          id="distance"
-          type="number"
-          step={0.1}
-          {...register("distance", { required: true, valueAsNumber: true })}
-        />
+        {sportsWithDistance.includes(sportTypeSelected) && (
+          <div>
+            <label htmlFor="distance">Distance (en km)</label>
+            <input
+              id="distance"
+              type="number"
+              step={0.1}
+              {...register("distance", {
+                required: false,
+                valueAsNumber: true,
+              })}
+            />
+          </div>
+        )}
 
         {/* Utilisation de Controller pour le champ moving_time */}
         <Controller

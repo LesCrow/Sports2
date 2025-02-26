@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { convertMetersToKilometers } from "../utils/distanceUtils";
 import { dateUtcToLocalDate, formatSecondsToHMS } from "../utils/timeUtils";
-import { TTotalActivitiesWithoutTotalBySport } from "../types";
+
 import { formatKey } from "../utils/stringUtils";
 import Link from "next/link";
 
