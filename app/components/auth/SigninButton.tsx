@@ -1,14 +1,14 @@
-"use server";
-import { signIn } from "@/auth";
+"use client";
 
-export default async function SignIn() {
-  return (
-    <form
-      action={async () => {
-        await signIn("github", { redirectTo: "/" });
-      }}
-    >
-      <button type="submit">Signin with GitHub</button>
-    </form>
-  );
-}
+import { signIn } from "next-auth/react";
+
+const SignInButton = () => {
+  const handleSignIn = () => {
+    // Sign in avec le fournisseur (ici GitHub)
+    signIn("github"); // Vous pouvez remplacer 'github' par d'autres fournisseurs comme 'google', etc.
+  };
+
+  return <button onClick={handleSignIn}>Sign In with GitHub</button>;
+};
+
+export default SignInButton;
