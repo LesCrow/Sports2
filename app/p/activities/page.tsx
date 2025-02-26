@@ -1,11 +1,11 @@
 "use client";
 
-import Activities from "@/app/components/Activities";
+import ActivitiesTable from "@/app/components/ActivitiesTable";
 
 export default function ActivitiesPage() {
   return (
     <div>
-      <Activities />
+      <ActivitiesTable />
     </div>
   );
 }

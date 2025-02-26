@@ -12,3 +12,8 @@ export type TTotalActivities = {
     }
   ];
 };
+
+export type TTotalActivitiesWithoutTotalBySport = Omit<
+  TTotalActivities,
+  "totalBySport"
+>;

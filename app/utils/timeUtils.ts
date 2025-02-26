@@ -1,31 +1,17 @@
-export function formatSeconds(totalSeconds: number): {
-  hours: number;
-  minutes: number;
-  seconds: number;
-} {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  return { hours, minutes, seconds };
-}
-
-export function formatTimeToString(time: {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}): string {
-  const pad = (num: number) => String(num).padStart(2, "0");
-  return `${pad(time.hours)}:${pad(time.minutes)}:${pad(time.seconds)}`;
-}
-
 export function formatSecondsToHMS(totalSeconds: number) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  const time = { hours, minutes, seconds };
+
   const pad = (num: number) => String(num).padStart(2, "0");
-  return `${pad(time.hours)}:${pad(time.minutes)}:${pad(time.seconds)}`;
+  if (seconds === 0 && minutes === 0) {
+    return `${pad(hours)}h`;
+  }
+  if (seconds === 0) {
+    console.log(seconds);
+    return `${pad(hours)}h${pad(minutes)}'`;
+  }
+  return `${pad(hours)}h${pad(minutes)}'${pad(seconds)}''`;
 }
 export function formatHMStoSeconds(time: string): number {
   const [hours, minutes, seconds] = time.split(":").map(Number);
@@ -40,4 +26,8 @@ export function calculateAverageSpeed(distance: number, time: number) {
     throw new Error("Le temps ne peut pas être égal à 0.");
   }
   return distance / 1000 / time;
+}
+
+export function dateUtcToLocalDate(date: Date) {
+  return new Date(date).toLocaleDateString();
 }
