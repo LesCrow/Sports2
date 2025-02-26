@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import SignInButton from "./components/auth/SigninButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import NewActivityForm from "./components/NewActivityForm";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -57,6 +58,9 @@ export default function Home() {
         <p>Nombre d&apos;activités : {totalActivities?.activitiesCount}</p>
         <p>Distance totale : {totalActivities?.distance}</p>
         <p>temps total : {totalActivities?.moving_time}</p>
+      </div>
+      <div>
+        <NewActivityForm />
       </div>
     </div>
   );

@@ -37,7 +37,8 @@ export const POST = auth(async (req) => {
 
   // Poster une activité
   try {
-    const { distance, moving_time, name, sport_type, type } = await req.json();
+    const { distance, moving_time, name, sport_type, type, start_date } =
+      await req.json();
     const newActivity = await prisma.activity.create({
       data: {
         distance,
@@ -45,6 +46,8 @@ export const POST = auth(async (req) => {
         name,
         sport_type,
         type,
+        start_date,
+        userId,
       },
     });
     return NextResponse.json({ newActivity });
