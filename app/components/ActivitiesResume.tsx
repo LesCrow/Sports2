@@ -51,6 +51,10 @@ export default function ActivitiesResume() {
         return "cyclingPic.png";
       case "WORKOUT":
         return "workoutPic.png";
+      case "CLIMBING":
+        return "climbingPic.png";
+      case "STRETCH":
+        return "yogaPic.png";
       default:
         return "";
     }
