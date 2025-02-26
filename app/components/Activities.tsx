@@ -1,5 +1,6 @@
 // components/Activities.tsx
 import { Activity } from "@prisma/client";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -12,17 +13,11 @@ const Activities = () => {
     if (status === "authenticated") {
       const fetchActivities = async () => {
         try {
-          const response = await fetch("/api/activities");
-          const data = await response.json();
-
-          if (response.ok) {
-            setActivities(data.activities);
-          } else {
-            setError(data.error || "Failed to fetch activities");
-          }
+          const response = await axios.get("/api/activities");
+          setActivities(response.data.activities);
         } catch (err) {
-          setError("An error occurred while fetching activities");
-          console.error(err);
+          const error = err as Error;
+          setError(error.message);
         }
       };
 
@@ -33,7 +28,6 @@ const Activities = () => {
   if (status === "loading") {
     return <div>Loading...</div>;
   }
-
   if (error) {
     return <div>{error}</div>;
   }

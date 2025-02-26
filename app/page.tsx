@@ -54,7 +54,7 @@ export default function Home() {
       </div>
       <div>
         <h2>Total de mes activités</h2>
-        <p>Nombre d'activités : {totalActivities?.activitiesCount}</p>
+        <p>Nombre d&apos;activités : {totalActivities?.activitiesCount}</p>
         <p>Distance totale : {totalActivities?.distance}</p>
         <p>temps total : {totalActivities?.moving_time}</p>
       </div>
