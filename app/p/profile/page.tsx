@@ -13,21 +13,20 @@ export default function Profile() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get("/api/user", {
-          withCredentials: true,
-        });
+    if (status === "authenticated") {
+      const fetchActivities = async () => {
+        try {
+          const response = await axios.get("/api/user");
+          setUser(response.data.user);
+        } catch (err) {
+          const error = err as Error;
+          setError(error.message);
+        }
+      };
 
-        setUser(response.data.user);
-      } catch (err) {
-        const error = err as Error;
-        setError(error.message);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+      fetchActivities();
+    }
+  }, [status]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -48,6 +47,8 @@ export default function Profile() {
   if (!user) {
     return <div>Loading...</div>;
   }
+
+  console.log(user);
 
   return (
     <div>
