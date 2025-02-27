@@ -7,6 +7,7 @@ import ActivitiesResume from "./components/ActivitiesResume";
 import { useEffect, useState } from "react";
 import { TTotalActivities } from "./types";
 import axios from "axios";
+import RegisterForm from "./components/auth/RegisterForm";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -41,7 +42,11 @@ export default function Home() {
   if (!session) {
     return (
       <div>
-        You are not logged in. <SignInButton />
+        <p>
+          You are not logged in.
+          <SignInButton /> or
+          <RegisterForm />
+        </p>
       </div>
     );
   }
