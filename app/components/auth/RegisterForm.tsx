@@ -8,7 +8,6 @@ type TUserFormInput = {
 
 export default function RegisterForm() {
   const { register, handleSubmit } = useForm<TUserFormInput>();
-  console.log(register);
 
   const onSubmit = async (user: TUserFormInput) => {
     try {
