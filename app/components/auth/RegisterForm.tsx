@@ -11,7 +11,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (user: TUserFormInput) => {
     try {
-      axios.post("api/auth/register", {
+      await axios.post("api/auth/register", {
         email: user.email,
         password: user.password,
       });

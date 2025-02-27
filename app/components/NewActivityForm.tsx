@@ -26,7 +26,7 @@ export default function NewActivityForm() {
     }
     const payload = {
       ...data,
-
+      start_date: new Date(data.start_date).toISOString(),
       distance: data.distance ? data.distance * 1000 : 0, // Convertir en mètres
       moving_time: formatHMStoSeconds(data.moving_time), // Convertir en secondes
     };
@@ -58,6 +58,13 @@ export default function NewActivityForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="name">Nom de l&apos;activité</label>
         <input id="name" {...register("name")} />
+
+        <label htmlFor="start_date">Date l&apos;activité</label>
+        <input
+          id="start_date"
+          {...register("start_date")}
+          type="datetime-local"
+        />
 
         <label htmlFor="sport_type">Type de sport</label>
         <select
