@@ -97,7 +97,7 @@ export default function ActivitiesTable() {
                 <td key={key}>
                   {key === "name" ? (
                     <Link
-                      href={`/activities/${row.id}`}
+                      href={`/p/activities/${row.id}`}
                       className="text-blue-500 hover:underline"
                     >
                       {row[key]}

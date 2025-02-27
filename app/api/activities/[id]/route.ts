@@ -41,13 +41,13 @@ export const GET = auth(async (req, { params }) => {
       );
     }
 
-    // Vérifiez si l'activité appartient à l'utilisateur connecté
-    if (activity.userId !== userId) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à voir cette activité." },
-        { status: 403 }
-      );
-    }
+    // // Vérifiez si l'activité appartient à l'utilisateur connecté
+    // if (activity.userId !== userId) {
+    //   return NextResponse.json(
+    //     { error: "Vous n'êtes pas autorisé à voir cette activité." },
+    //     { status: 403 }
+    //   );
+    // }
 
     // Retourner l'activité trouvée
     return NextResponse.json(activity, { status: 200 });
