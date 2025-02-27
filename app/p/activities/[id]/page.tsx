@@ -1,5 +1,6 @@
 "use client";
 
+import ActivityDetails from "@/app/components/ActivityDetails";
 import { Activity } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -28,7 +29,10 @@ export default function ActivityPage() {
     }
   }, [id, status]);
 
-  console.log(activity);
-
-  return <div>ACTIVITY DETAILS</div>;
+  return (
+    <div>
+      <h1>ACTIVITY DETAILS</h1>
+      <ActivityDetails activity={activity} />
+    </div>
+  );
 }
