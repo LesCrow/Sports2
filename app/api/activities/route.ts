@@ -35,7 +35,6 @@ export const POST = auth(async (req) => {
     );
   }
 
-  // Poster une activité
   try {
     const { distance, moving_time, name, sport_type, type, start_date } =
       await req.json();

@@ -30,6 +30,7 @@ model User {
   name             String?
   email            String          @unique
   emailVerified    DateTime?
+  password         String?
   image            String?
   distance         Int?
   weight           Float?
@@ -103,7 +104,7 @@ model Authenticator {
 model Activity {
   id                   String    @id @default(cuid())
   name                 String
-  distance             Float  
+  distance             Float
   moving_time          Int
   total_elevation_gain Float?
   type                 Type
