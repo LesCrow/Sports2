@@ -8,10 +8,12 @@ import { dateUtcToLocalDate, formatSecondsToHMS } from "../utils/timeUtils";
 
 import { formatKey } from "../utils/stringUtils";
 import Link from "next/link";
+import { NextResponse } from "next/server";
 
 export default function ActivitiesTable() {
   const { status } = useSession();
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [isActivityDeleted, setIsActivityDeleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -20,6 +22,7 @@ export default function ActivitiesTable() {
         try {
           const response = await axios.get("/api/activities");
           setActivities(response.data.activities);
+          setIsActivityDeleted(false);
         } catch (err) {
           const error = err as Error;
           setError(error.message);
@@ -28,7 +31,7 @@ export default function ActivitiesTable() {
 
       fetchActivities();
     }
-  }, [status]);
+  }, [status, isActivityDeleted]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -36,6 +39,17 @@ export default function ActivitiesTable() {
   if (error) {
     return <div>{error}</div>;
   }
+
+  const handleDelete = async (activityId: string) => {
+    try {
+      const response = await axios.delete(`/api/activities/${activityId}`);
+      setIsActivityDeleted(true);
+      alert("Activité supprimée avec succés");
+      return NextResponse.json(response, { status: 200 });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // Clés à afficher
   const displayedKeys: (keyof Activity)[] = [
@@ -73,6 +87,7 @@ export default function ActivitiesTable() {
               <th key={key as string}>{String(formatKey(key))}</th>
             ))}
             {!Array.isArray(activities) && <th></th>}
+            <th>DELETE</th>
           </tr>
         </thead>
         <tbody>
@@ -92,6 +107,9 @@ export default function ActivitiesTable() {
                   )}
                 </td>
               ))}
+              <td>
+                <button onClick={() => handleDelete(row.id)}>X</button>
+              </td>
             </tr>
           ))}
         </tbody>
