@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { TTotalActivities } from "./types";
 import axios from "axios";
 import RegisterForm from "./components/auth/RegisterForm";
+import SignInForm from "./components/auth/SignInForm";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -45,8 +46,9 @@ export default function Home() {
         <p>
           You are not logged in.
           <SignInButton /> or
-          <RegisterForm />
         </p>
+        <RegisterForm />
+        <SignInForm />
       </div>
     );
   }

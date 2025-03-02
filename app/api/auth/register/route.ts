@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const { email, password } = await req.json();
 
   // Validation des champs
-  if (!email) {
+  if (!email && !password) {
     return NextResponse.json(
       { message: "Email et mot de passe sont obligatoires." },
       { status: 400 }

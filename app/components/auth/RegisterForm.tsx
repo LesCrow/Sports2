@@ -24,7 +24,7 @@ export default function RegisterForm() {
 
   return (
     <div>
-      <h1>RegisterForm</h1>
+      <h1>SIGN UP</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email">Email : </label>
         <input id="email" {...register("email")} />
