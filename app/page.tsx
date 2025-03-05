@@ -9,13 +9,34 @@ import { TTotalActivities } from "./types";
 import axios from "axios";
 import RegisterForm from "./components/auth/RegisterForm";
 import SignInForm from "./components/auth/SignInForm";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const [totalActivities, setTotalActivities] =
     useState<TTotalActivities | null>(null);
-
   const [error, setError] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   const code = searchParams.get("code");
+
+  //   if (code) {
+  //     // Si un code est présent dans l'URL, tu peux maintenant échanger ce code contre un access_token
+  //     console.log("Code reçu de Strava:", code);
+
+  //     // Par exemple, rediriger l'utilisateur vers une API backend pour échanger le code
+  //     fetch(`/api/auth/callback?code=${code}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log("Données de l'utilisateur après échange du code:", data);
+  //         // Traitement des données (stockage dans l'état global, redirection, etc.)
+  //       })
+  //       .catch((error) => {
+  //         console.error("Erreur lors de l'échange du code:", error);
+  //       });
+  //   }
+  // }, [searchParams]);
 
   useEffect(() => {
     if (status === "authenticated") {
