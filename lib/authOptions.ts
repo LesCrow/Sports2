@@ -9,16 +9,15 @@ import Strava from "next-auth/providers/strava";
 export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    // Strava({
-    //   clientId: process.env.STRAVA_CLIENT_ID,
-    //   clientSecret: process.env.STRAVA_CLIENT_SECRET,
-    //   authorization:
-    //     "https://www.strava.com/oauth/authorize?scope=read,activity:read_all",
-    //   token: "https://www.strava.com/oauth/token",
-    //   userinfo: "https://www.strava.com/api/v3/athlete",
+    Strava({
+      clientId: process.env.STRAVA_CLIENT_ID,
+      clientSecret: process.env.STRAVA_CLIENT_SECRET,
+      authorization: "https://www.strava.com/oauth/authorize",
+      token: "https://www.strava.com/oauth/token",
+      userinfo: "https://www.strava.com/api/v3/athlete",
 
-    //   name: "strava",
-    // }),
+      name: "strava",
+    }),
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
