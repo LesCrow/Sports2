@@ -27,7 +27,7 @@ export const authOptions: NextAuthConfig = {
         try {
           // Recherche de l'utilisateur par son email dans la base de données
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: { email: credentials.email as string },
           });
 
           if (!user) {
@@ -36,8 +36,8 @@ export const authOptions: NextAuthConfig = {
 
           // Comparer le mot de passe hashé avec celui fourni par l'utilisateur
           const isPasswordValid = bcrypt.compareSync(
-            credentials.password,
-            user.password
+            credentials.password as string,
+            user.password as string
           );
 
           if (isPasswordValid) {
@@ -67,8 +67,8 @@ export const authOptions: NextAuthConfig = {
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.email = token.email;
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
       session.user.name = token.name;
       return session;
     },
